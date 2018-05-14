@@ -49,9 +49,18 @@ export async function sendDynamic(params) {
 }
 //点赞
 export async function isLiked(params) {
-  console.log(params)
+  // console.log(params)
   return request({
     url: HOST+'/isLiked',
+    method: 'post',
+    data : params
+  });
+}
+//点赞
+export async function sendReview(params) {
+  console.log(params)
+  return request({
+    url: HOST+'/sendReview',
     method: 'post',
     data : params
   });

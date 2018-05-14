@@ -1,7 +1,7 @@
 import React from "react"
 import moment from 'moment';//格式化时间
 import localStorage from '../../util/storage'
-import {sendDynamic, isLiked} from "../../api/api"
+import {sendDynamic, isLiked, sendReview} from "../../api/api"
 
 import "../../assets/stylus/reset.styl"
 import "../../assets/stylus/font.styl"
@@ -36,6 +36,7 @@ class ReviewList extends React.Component{
       reviewIndex:"99",
       selectedColor:{},
       reviewdata:{},
+      tempReview:{},
       imgArr:[gold, silver, copper],
       temp:"none",
       textColor:"#333"
@@ -43,14 +44,35 @@ class ReviewList extends React.Component{
   }
 
   check_like_index(index,liked){//点赞
-    return this.state.currentIndex.indexOf(index)>-1 ? "likeStyle" : "";
+    if(this.props.likedRecord.length > 0){
+      if (this.props.likedRecord[0].recordarr.indexOf(liked )> -1){
+        return "likeStyle";
+      }else {
+        return this.state.currentIndex.indexOf(index)>-1 ? "likeStyle" : "";
+      }
+    }else {
+      if (this.props.likedRecord.indexOf(liked )> -1){
+        return "likeStyle";
+      }else {
+        return this.state.currentIndex.indexOf(index)>-1 ? "likeStyle" : "";
+      }
+    }
+
   }
 
   check_like_fire(index,liked){//热评点赞
-    if (liked){//初始化
-      return "likeStyle";
-    }else{//点击后变化
-      return this.state.fireCurrentIndex.indexOf(index)>-1 ? "likeStyle" : "";
+    if(this.props.likedRecord.length > 0){
+      if (this.props.likedRecord[0].recordarr.indexOf(liked )> -1){
+        return "likeStyle";
+      }else {
+        return this.state.fireCurrentIndex.indexOf(index)>-1 ? "likeStyle" : "";
+      }
+    }else {
+      if (this.props.likedRecord.indexOf(liked )> -1){
+        return "likeStyle";
+      }else {
+        return this.state.fireCurrentIndex.indexOf(index)>-1 ? "likeStyle" : "";
+      }
     }
   }
 
@@ -69,7 +91,7 @@ class ReviewList extends React.Component{
 
   }
 
-  handleClick = () =>{
+  handleClick = () =>{//发动态
     if (localStorage.getLoginStatus()){
       if (document.getElementById("dynamicReview").value == false){
         message.warning("输入一些内容吧");
@@ -80,9 +102,51 @@ class ReviewList extends React.Component{
         color:this.state.textColor,
         dynamicreview: document.getElementById("dynamicReview").value
       }).then((value)=>{
-        console.log(value)
         if(value.errorCode == 0){
           this.setState({reviewdata:value.data,temp:"block"})
+        }else {
+          message.warning(value.errorMessage);
+        }
+      })
+    }else {
+      message.warning('登录之后再来发动态吧');
+    }
+  }
+
+  handleRocket(index,ele){//发评论
+    if (localStorage.getLoginStatus()){
+      if (document.getElementsByClassName("review")[index].value == false){
+        message.warning("输入一些内容吧");
+        return
+      }
+      sendReview({
+        id:ele._id,
+        reviewcontents: document.getElementsByClassName("review")[index].value,
+        username:localStorage.getUsername()
+      }).then((value)=>{
+        if(value.errorCode == 0){
+          message.success("刷新查看评论");
+        }else {
+          message.warning(value.errorMessage);
+        }
+      })
+    }else {
+      message.warning('登录之后再来发动态吧');
+    }
+  }
+  handlefireRocket(index,ele){//发评论
+    if (localStorage.getLoginStatus()){
+      if (document.getElementsByClassName("firereview")[index].value == false){
+        message.warning("输入一些内容吧");
+        return
+      }
+      sendReview({
+        id:ele._id,
+        reviewcontents: document.getElementsByClassName("firereview")[index].value,
+        username:localStorage.getUsername()
+      }).then((value)=>{
+        if(value.errorCode == 0){
+          message.success("刷新查看评论");
         }else {
           message.warning(value.errorMessage);
         }
@@ -145,21 +209,48 @@ class ReviewList extends React.Component{
                                 message.warning('登录之后再来点赞吧');
                                 return
                               };
-                              if (!element.liked){
-                                isLiked({id:element._id}).then((value)=>{
-                                  if (value.errorCode == 0){
-                                    if (this.state.fireIndex.indexOf(index) == -1){
-                                      this.state.fireIndex.push(index);
-                                      this.setState({fireCurrentIndex:this.state.fireIndex});
+                              if(this.props.likedRecord.length > 0){
+                                if (this.props.likedRecord[0].recordarr.indexOf(element._id) == -1 && this.state.fireIndex.indexOf(index) == -1){
+                                  isLiked({id:element._id,username:localStorage.getUsername()}).then((value)=>{
+                                    if (value.errorCode == 0){
+                                      if (element.likenum){
+                                        element.likenum++
+                                      }else {
+                                        element.likenum = 1;//增加点赞数
+                                      }
+                                      // element.liked = !element.liked;//限制重复点赞
+                                      if (this.state.fireIndex.indexOf(index) == -1){
+                                        this.state.fireIndex.push(index);
+                                        this.setState({fireCurrentIndex:this.state.fireIndex});
+                                      }
+                                    }else{
+                                      message.warning(value.errorMessage);
                                     }
-                                  }else{
-                                    message.warning(value.errorMessage);
-                                  }
-                                })
+                                  })
+                                }
+                              }else {
+                                if (this.props.likedRecord.indexOf(element._id) == -1 && this.state.fireIndex.indexOf(index) == -1){
+                                  isLiked({id:element._id,username:localStorage.getUsername()}).then((value)=>{
+                                    if (value.errorCode == 0){
+                                      if (element.likenum){
+                                        element.likenum++
+                                      }else {
+                                        element.likenum = 1;//增加点赞数
+                                      }
+                                      // element.liked = !element.liked;//限制重复点赞
+                                      if (this.state.fireIndex.indexOf(index) == -1){
+                                        this.state.fireIndex.push(index);
+                                        this.setState({fireCurrentIndex:this.state.fireIndex});
+                                      }
+                                    }else{
+                                      message.warning(value.errorMessage);
+                                    }
+                                  })
+                                }
                               }
                             }
                             }
-                            likeStyle={this.check_like_fire(index,element.liked)}
+                            likeStyle={this.check_like_fire(index,element._id)}
                             type="like-o" text={element.likenum}
                             spin={true}/>,
                   <IconText
@@ -182,7 +273,7 @@ class ReviewList extends React.Component{
                   className={this.check_item_index(index)}
                   itemLayout="horizontal"
                   dataSource={element.reviewdata}
-                  header={<div><Input placeholder={"评论"} disabled={!localStorage.getLoginStatus()} addonAfter={<Icon type="rocket" />}/></div>}
+                  header={<div><Input className="firereview" placeholder={"评论"} disabled={!localStorage.getLoginStatus()} addonAfter={<Icon onClick={this.handlefireRocket.bind(this,index,element)} type="rocket" />}/></div>}
                   renderItem={item => (
                     <List.Item className="list_item">
                       <List.Item.Meta
@@ -206,7 +297,58 @@ class ReviewList extends React.Component{
               <div>
               <Card
                 hoverable={true}
-                actions={[<IconText clickFn={()=>{if (!localStorage.getLoginStatus()){message.warning('登录之后再来点赞吧');return};if (this.state.likedIndex.indexOf(index) == -1){this.state.likedIndex.push(index);this.setState({currentIndex:this.state.likedIndex});}}} likeStyle={this.check_like_index(index)} type="like-o" text={element.likenum} spin={true}/>,
+                actions={[<IconText
+                            clickFn={()=>{
+                              if (!localStorage.getLoginStatus()){
+                                message.warning('登录之后再来点赞吧');
+                                return
+                              };
+                              if (this.props.likedRecord.length > 0){
+                                if (this.props.likedRecord[0].recordarr.indexOf(element._id) == -1 && this.state.likedIndex.indexOf(index) == -1){
+                                  isLiked({id:element._id,username:localStorage.getUsername()}).then(value => {
+                                    if (value.errorCode == 0){
+                                      if (element.likenum){
+                                        element.likenum++
+                                      }else {
+                                        element.likenum = 1;//增加点赞数
+                                      }
+                                      element.liked = !element.liked;//限制重复点赞
+                                      if (this.state.likedIndex.indexOf(index) == -1){
+                                        this.state.likedIndex.push(index);
+                                        this.setState({currentIndex:this.state.likedIndex});
+                                      }
+                                    }else {
+                                      message.warning(value.errorMessage);
+                                    }
+                                  })
+                                }
+                              }else {
+                                if (this.props.likedRecord.indexOf(element._id) == -1 && this.state.likedIndex.indexOf(index) == -1){
+                                  isLiked({id:element._id,username:localStorage.getUsername()}).then(value => {
+                                    if (value.errorCode == 0){
+                                      if (element.likenum){
+                                        element.likenum++
+                                      }else {
+                                        element.likenum = 1;//增加点赞数
+                                      }
+                                      element.liked = !element.liked;//限制重复点赞
+                                      if (this.state.likedIndex.indexOf(index) == -1){
+                                        this.state.likedIndex.push(index);
+                                        this.setState({currentIndex:this.state.likedIndex});
+                                      }
+                                    }else {
+                                      message.warning(value.errorMessage);
+                                    }
+                                  })
+                                }
+                              }
+
+                            }
+                          }
+                            likeStyle={this.check_like_index(index,element._id)}
+                            type="like-o"
+                            text={element.likenum}
+                            spin={true}/>,
                   <IconText type="message" text={element.reviewsnum} clickFn={()=>{if (!localStorage.getLoginStatus()){message.warning('登录之后再来评论吧');};this.state.reviewIndex == index ? this.setState({reviewIndex:"A"}) : this.setState({reviewIndex:index})}} />]}
               >
                 <Meta
@@ -220,7 +362,7 @@ class ReviewList extends React.Component{
                   className={this.check_item_index(index)}
                   itemLayout="horizontal"
                   dataSource={element.reviewdata}
-                  header={<div><Input placeholder={"评论"} disabled={!localStorage.getLoginStatus()} addonAfter={<Icon type="rocket" />}/></div>}
+                  header={<div><Input className="review" placeholder={"评论"} disabled={!localStorage.getLoginStatus()} addonAfter={<Icon onClick={this.handleRocket.bind(this,index,element)} type="rocket" />}/></div>}
                   renderItem={item => (
                     <List.Item className="list_item">
                       <List.Item.Meta

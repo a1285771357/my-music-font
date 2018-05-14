@@ -12,8 +12,9 @@ import Scroll from "../../common/scroll/Scroll"
 import {getDynamicList} from "../../api/api"
 import momentZhcn from "../../util/moment-zhcn"
 import ReviewList from "./ReviewList"
-
 import localStorage from '../../util/storage'
+
+
 import { List, Avatar, Icon, Input } from 'antd';
 import "../../assets/stylus/reset.styl"
 import "../../assets/stylus/font.styl"
@@ -31,16 +32,24 @@ class Viewpoint extends React.Component {
       menuShow: false,
       listData:[],
       interestData:[],
+      likedRecord:[],
       currentIndex:0,
       spin:true
     };
   }
 
   componentDidMount(){
-    getDynamicList().then(value => {
+    getDynamicList({username:localStorage.getUsername()}).then(value => {
+      if(value.likedRecord == true){
+        var recordarr = value.likedRecord[0].recordarr
+      }else {
+        var recordarr = value.likedRecord
+      }
+      // console.log("view"+JSON.stringify(recordarr))
       this.setState({
         listData:value.timeRows,
-        interestData:value.likeRows
+        interestData:value.likeRows,
+        likedRecord:recordarr
       })
     })
   }
@@ -70,7 +79,7 @@ class Viewpoint extends React.Component {
     );
     return (
         <Scroll>
-          <ReviewList data={this.state.listData} interestData={this.state.interestData ? this.state.interestData : []} />
+          <ReviewList data={this.state.listData} interestData={this.state.interestData ? this.state.interestData : []} likedRecord={this.state.likedRecord ? this.state.likedRecord : []} />
         </Scroll>
     );
   }

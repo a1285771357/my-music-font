@@ -62,7 +62,7 @@ class Musichall extends React.Component {
             <Route path="/musichall/recommend" component={Recommend}/>
             <Route path="/musichall/ranking" component={Ranking}/>
             <Route path="/musichall/singer" component={SingerList}/>
-            <Route path="/musichall/search" compone nt={Search}/>
+            <Route path="/musichall/search" component={Search}/>
             {/*<Route component={Recommend}/>*/}
           </div>
           {/*<MusicPlayer/>*/}
