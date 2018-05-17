@@ -12,7 +12,7 @@ const initialState = {
 	showStatus: false,  //显示状态
 	song: localStorage.getCurrentSong(),  //当前歌曲
 	songs: localStorage.getSongs(),  //歌曲列表
-    visible:true//登录提示
+    showTips:localStorage.getLoginStatus()//登录提示
 };
 
 //拆分Reducer
@@ -65,12 +65,12 @@ function songs(songs = initialState.songs, action) {
 }
 
 //显示或隐藏登录提示
-function showLoginTips(visible = initialState.visible, action) {
+function showTips(showTips = initialState.showTips, action) {
   switch (action.type) {
     case ActionTypes.SHOW_LOGTIPS:
-      return action.visible;//返回action中的
+      return action.showTips;//返回action中的
     default:
-      return visible;//返回默认
+      return showTips;//返回默认
   }
 }
 
@@ -81,7 +81,7 @@ const reducer = combineReducers({
 	showStatus,
 	song,
 	songs,
-    showLoginTips
+  	showTips
 });
 
 export default reducer

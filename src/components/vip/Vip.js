@@ -8,6 +8,7 @@ import Search from "../../containers/Search"
 import MusicPlayer from "../musichall/play/MusicPlayer"
 import MusicMenu from "../setting/Menu"
 
+import Danmaku from "../musichall/play/Danmaku"
 import { Card } from 'antd';
 import banner1 from "../../assets/imgs/banner_thumb_1.jpg"
 import banner2 from "../../assets/imgs/banner_thumb_2.jpg"
@@ -37,6 +38,7 @@ class Vip extends React.Component {
   render() {
     return (
       <div>
+        <Danmaku/>
       <Card
         hoverable
         cover={<img alt="example" src={banner1} />}

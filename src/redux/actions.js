@@ -1,6 +1,6 @@
 import * as ActionTypes from "./actionTypes"
 /**
- * Action是把数据从应用传到store的有效载荷。它是store数据的唯一来源
+ * Action是把数据从应用传到store的有效载荷。它是store数据的唯一来源,action creator创建action
  */
 
 //Action创建函数，用来创建action对象。使用action创建函数更容易被移植和测试
@@ -25,6 +25,6 @@ export function setSongs(songs) {
 	return {type:ActionTypes.SET_SONGS, songs};
 }
 
-export function showLogTips(visible) {
-	return {type:ActionTypes.SHOW_LOGTIPS, visible};
+export function showTips(showTips) {
+	return {type:ActionTypes.SHOW_LOGTIPS, showTips};
 }

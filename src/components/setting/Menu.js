@@ -1,6 +1,10 @@
 import React from "react"
+import {BrowserRouter as Router, Route, NavLink} from "react-router-dom"
 import {CSSTransition} from "react-transition-group"
 import Skin from "../../containers/Skin"
+import localStorage from '../../util/storage'
+import {logout} from "../../api/api";
+import PropTypes from "prop-types"
 
 import "./menu.styl"
 
@@ -8,10 +12,15 @@ class Menu extends React.Component {
 	constructor(props) {
 		super(props);
 
+
 		this.state = {
 			skinShow: false
 		};
 	}
+
+    static contextTypes = {
+      router: PropTypes.object.isRequired
+    };
 	showSetting = (status) => {
 		this.close();
         // menu关闭后打开设置
@@ -23,6 +32,17 @@ class Menu extends React.Component {
 	}
 	close = () => {
         this.props.closeMenu();
+    }
+
+    handleLogout = () => {
+      var _this = this;//更改this指向
+      logout().then(value => {
+	    if (value.errorCode == 0){
+	      localStorage.delLoginStatus()
+          window.location.reload()
+          _this.context.router.history.push("/musichall/recommend")
+        }
+      })
     }
 	render() {
 		return (
@@ -38,6 +58,9 @@ class Menu extends React.Component {
 			        <div className="bottom-wrapper">
 			          <div className="item" onClick={() => {this.showSetting(true);}}>
 			            皮肤中心
+			          </div>
+					  <div className="item" onClick={this.handleLogout}>
+			            退出登录
 			          </div>
 			          <div className="item-close" onClick={this.close}>
 			            关闭

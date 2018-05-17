@@ -4,8 +4,13 @@ import { CSSTransition } from "react-transition-group"
 import Progress from "./Progress"
 import MiniPlayer from "./MiniPlayer"
 import {Song} from "@/model/song"
+import Danmaku  from "./Danmaku"
 
 import "./player.styl"
+import lyric_default from "../../../assets/imgs/lyric_default.png"
+import lyric_active from "../../../assets/imgs/lyric_active.png"
+import danmaku_default from "../../../assets/imgs/danmaku_default.png"
+import danmaku_active from "../../../assets/imgs/danmaku_active.png"
 
 class Player extends React.Component {
 	constructor(props) {
@@ -320,6 +325,12 @@ class Player extends React.Component {
 								}
 							}/>
 						</div>
+						<Danmaku/>
+						{/*<div style={{position:"relative"}}>*/}
+                      	  <img style={{position:"absolute",right:"20px",bottom:"10px"}} width="50px" src={lyric_default}/>
+                          <img style={{position:"absolute",left:"20px",bottom:"10px"}} width="50px" src={danmaku_default}/>
+
+						{/*</div>*/}
 					</div>
 					<div className="singer-bottom">
 						<div className="controller-wrapper">

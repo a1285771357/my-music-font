@@ -18,13 +18,18 @@ class NormalLoginForm extends React.Component {
   constructor(props) {
     super(props);
 
-    // this.state = {};
-
+    this.visible=false
+    this.state = {
+      visible:false
+    };
+    console.log(this.props)
   }
 
   error (value){
     message.error(value.errorMessage);
   };
+
+
 
   handleSubmit = (e) => {
     e.preventDefault();
@@ -49,7 +54,9 @@ class NormalLoginForm extends React.Component {
                 pathname:'/musichall/recommend',
                 state:data,
               }
+              this.props.showTips(false)
               this.props.history.push(path)
+              window.location.reload()
             }
           })
         })

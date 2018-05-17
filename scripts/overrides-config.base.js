@@ -10,6 +10,7 @@ function resolve (dir) {
 module.exports.rootPath = resolve('src');
 
 module.exports.stylusLoaderOptionsPlugin = new webpack.LoaderOptionsPlugin({
+
     options: {
       plugins: [
         ['import', [{ libraryName: "antd", style: 'css' }]],

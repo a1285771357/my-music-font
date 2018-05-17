@@ -4,7 +4,8 @@ import {BrowserRouter as Router, Route, NavLink, Redirect} from "react-router-do
 import Viewpoint from "./viewpoint/Viewpoint"
 import Vip from "./vip/Vip"
 import Musichall from "./musichall/Musichall"
-import Login from "./user/Login"
+import Login from "../containers/Login"
+import Home from "./user/Home"
 import Search from "../containers/Search";
 import SingerList from "./musichall/singer/SingerList";
 import Recommend from "./musichall/recommend/Recommend";
@@ -28,8 +29,7 @@ class App extends React.Component {
 
     this.state = {
       menuShow: false,
-      defaultIndex:"1",
-      visible:true
+      defaultIndex:"1"
     };
   }
 
@@ -45,6 +45,10 @@ class App extends React.Component {
 
     })
 
+  }
+
+  selectRouter(isLogin){
+    return isLogin ? "/user/home" : "/login"
   }
 
   rsaPublicKey(){
@@ -64,9 +68,9 @@ class App extends React.Component {
           <div className="app skin-app">
             <header className="app-header skin-app-header">
               <i className="icon-et-more app-more" onClick={() => {this.setState({menuShow: true});}}></i>
-              <img src={logo} className="app-logo" alt="logo" />
-              <h1 className="app-title">Mango Music</h1>
-              <NavLink to="/login">
+              <NavLink to="/musichall/recommend"><img src={logo} className="app-logo" alt="logo" /></NavLink>
+              <NavLink to="/musichall/recommend"><h1 className="app-title">Mango Music</h1></NavLink>
+              <NavLink to={this.selectRouter(localStorage.getLoginStatus())}>
                 <Tooltip placement="left" title="点我登录" visible={!localStorage.getLoginStatus()}>
                   <Avatar className="app-ava" style={{background:"gray",float:"right",textAlign:"center"}} size="default" icon="user" ></Avatar>
                 </Tooltip>
@@ -101,6 +105,7 @@ class App extends React.Component {
                 <Route path="/viewpoint" component={Viewpoint} />
                 <Route path="/vip" component={Vip} />
                 <Route path="/login" component={Login} />
+                <Route path="/user/home" component={Home} />
             </div>
             <MusicPlayer/>
             <MusicMenu show={this.state.menuShow}

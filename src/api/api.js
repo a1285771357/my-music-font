@@ -13,7 +13,6 @@ export async function doLogin(params) {
 }
 //获取rsa公钥
 export async function getPublicRsa(params) {
-  // console.log(params)
   return request({
     url: HOST+'/getpublicKey',
     method: 'post',
@@ -56,11 +55,47 @@ export async function isLiked(params) {
     data : params
   });
 }
-//点赞
+//评论
 export async function sendReview(params) {
-  console.log(params)
+  // console.log(params)
   return request({
     url: HOST+'/sendReview',
+    method: 'post',
+    data : params
+  });
+}
+//获取音乐
+export async function getMusic(params) {
+  console.log(params)
+  return request({
+    url: HOST+'/serchfile',
+    method: 'get',
+    data : params
+  });
+}
+//登出
+export async function logout(params) {
+  // console.log(params)
+  return request({
+    url: HOST+'/logout',
+    method: 'post',
+    data : params
+  });
+}
+//获取我的主页信息
+export async function getMyHome(params) {
+  console.log(params)
+  return request({
+    url: HOST+'/getMyHome',
+    method: 'post',
+    data : params
+  });
+}
+//获取别人对我的评论
+export async function getReviewToMe(params) {
+  console.log(params)
+  return request({
+    url: HOST+'/getReviewToMe',
     method: 'post',
     data : params
   });
