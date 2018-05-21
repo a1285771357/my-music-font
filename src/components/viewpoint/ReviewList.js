@@ -13,6 +13,7 @@ import copper from "../../assets/imgs/copper_medal.png"
 import fire from "../../assets/imgs/fire.png"
 import { Card, Icon, Avatar, Collapse, List, Input, Select, Radio, Button, message } from 'antd';
 import momentZhcn from "../../util/moment-zhcn";
+import PropTypes from "prop-types";
 
 const { Meta } = Card;
 const Panel = Collapse.Panel;
@@ -42,6 +43,10 @@ class ReviewList extends React.Component{
       textColor:"#333"
     };
   }
+
+  static contextTypes = {
+    router: PropTypes.object.isRequired
+  };
 
   check_like_index(index,liked){//点赞
     if(this.props.likedRecord.length > 0){
@@ -263,7 +268,7 @@ class ReviewList extends React.Component{
               >
                 <Meta
                   avatar={<Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"/>}
-                  title={element.username}
+                  title={<a onClick={()=>{this.context.router.history.push({pathname:"/user/home",query:{username:element.username}})}}>{element.username}</a>}
                   description={<div style={{color:element.color}}>{element.dynamicreview}</div>}
                 />
                 <img src={this.state.imgArr[index]} width="20px" />
@@ -353,7 +358,7 @@ class ReviewList extends React.Component{
               >
                 <Meta
                   avatar={<Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"/>}
-                  title={element.username}
+                  title={<a onClick={()=>{this.context.router.history.push({pathname:"/user/home",query:{username:element.username}})}}>{element.username}</a>}
                   description={<div style={{color:element.color}}>{element.dynamicreview}</div>}
                 />
                 <div className="time" style={{float:"right"}}>{moment(element.time).startOf("hour").fromNow()}</div>

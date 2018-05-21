@@ -22,7 +22,7 @@ class NormalLoginForm extends React.Component {
     this.state = {
       visible:false
     };
-    console.log(this.props)
+    // console.log(this.props)
   }
 
   error (value){
@@ -46,6 +46,7 @@ class NormalLoginForm extends React.Component {
               // console.log(this.props)
               localStorage.setLoginStatus(true)
               localStorage.setUsername(values.userName)
+              localStorage.setUserlevel(value.level)
               let data = {
                 visible: false,//控制toolTip隐藏
                 photo:value.data.photo,//修改登录后的头像

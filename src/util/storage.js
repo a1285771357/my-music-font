@@ -39,7 +39,7 @@ let localStorage = {
   	/*获取登录状态*/
   	getLoginStatus(){
       let loginStatus = window.localStorage.getItem("loginStatus");
-      return loginStatus ? true : false;
+      return loginStatus;
 	},
   	/*删除登录状态*/
   	delLoginStatus(){
@@ -53,6 +53,19 @@ let localStorage = {
  	 /*设置用户名*/
  	setUsername(username){
     	window.localStorage.setItem("username", username);
+  	},
+ 	 /*获取用户名等级*/
+  	getUserlevel(){
+    	let level = window.localStorage.getItem("userlevel");
+    	return level;
+  	},
+ 	 /*设置用户名等级*/
+ 	setUserlevel(level){
+    	window.localStorage.setItem("userlevel", level);
+  	},
+ 	 /*删除用户名等级*/
+ 	delUserlevel(){
+    	window.localStorage.removeItem("userlevel");
   	},
 }
 

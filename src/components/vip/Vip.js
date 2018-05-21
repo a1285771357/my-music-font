@@ -1,23 +1,16 @@
 import React from "react"
 import {BrowserRouter as Router, Route, Switch, Redirect, NavLink} from "react-router-dom"
 
-import Recommend from "../musichall/recommend/Recommend"
-import Ranking from "../musichall/ranking/Ranking"
-import SingerList from "../musichall/singer/SingerList"
-import Search from "../../containers/Search"
-import MusicPlayer from "../musichall/play/MusicPlayer"
-import MusicMenu from "../setting/Menu"
-
-import Danmaku from "../musichall/play/Danmaku"
-import { Card } from 'antd';
-import banner1 from "../../assets/imgs/banner_thumb_1.jpg"
-import banner2 from "../../assets/imgs/banner_thumb_2.jpg"
-import banner3 from "../../assets/imgs/banner_thumb_3.jpg"
+import localStorage from '../../util/storage'
+import {buyVip} from "../../api/api";
+import { Button, message } from 'antd';
+import openbook from "../../assets/imgs/openbook.4gif.gif"
+import whitepage from "../../assets/imgs/whitepage.jpg"
 import "../../assets/stylus/reset.styl"
 import "../../assets/stylus/font.styl"
 import "../App.styl"
+import "./vip.styl"
 
-const { Meta } = Card;
 
 class Vip extends React.Component {
   constructor(props) {
@@ -35,37 +28,31 @@ class Vip extends React.Component {
     }
   }
 
+  handleClick = () => {
+    buyVip({username:localStorage.getUsername()}).then(value => {
+      if (value.errorCode == 0){
+        message.success("开通成功")
+      }else {
+        message.error(value.errorMessage)
+      }
+    })
+
+  }
+
   render() {
     return (
-      <div>
-        <Danmaku/>
-      <Card
-        hoverable
-        cover={<img alt="example" src={banner1} />}
-      >
-        <Meta
-          title="Europe Street beat"
-          description="www.instagram.com"
-        />
-      </Card>
-      <Card
-        hoverable
-        cover={<img alt="example" src={banner2} />}
-      >
-        <Meta
-          title="Europe Street beat"
-          description="www.instagram.com"
-        />
-      </Card>
-    <Card
-        hoverable
-        cover={<img alt="example" src={banner3} />}
-      >
-        <Meta
-          title="Europe Street beat"
-          description="www.instagram.com"
-        />
-      </Card>
+      <div style={{position:"relative",background:`url(${whitepage}) no-repeat`}}>
+        <img className="openBook" src={openbook} alt="" width="100%"/>
+        <div className="abouteVip showPage">
+          <h3>说明</h3>
+          <p>Q:如何获得VIP？</p>
+          <p>A:通过积分兑换，300积分兑换一个月VIP</p>
+          <p>Q:如何获得积分？</p>
+          <p>A:每日签到获得10积分</p>
+          <p>Q:VIP有什么用？</p>
+          <p>A:可以对个人资料加密，听取VIP音乐</p>
+          <Button type="primary" className="btn" onClick={this.handleClick}>立即开通</Button>
+        </div>
       </div>
     );
   }

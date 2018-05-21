@@ -47,6 +47,7 @@ class Player extends React.Component {
 		this.playerDOM = ReactDOM.findDOMNode(this.refs.player);
 		this.playerBgDOM = ReactDOM.findDOMNode(this.refs.playerBg);
 
+
 		this.audioDOM.addEventListener("canplay", () => {
 				this.audioDOM.play();
 				this.startImgRotate();
@@ -58,6 +59,7 @@ class Player extends React.Component {
 		}, false);
 
 		this.audioDOM.addEventListener("timeupdate", () => {
+			alert(this.audioDOM.currentTime)
 			if (this.state.playStatus === true) {
 				this.setState({
 					playProgress: this.audioDOM.currentTime / this.audioDOM.duration,
@@ -252,7 +254,7 @@ class Player extends React.Component {
 	 * 拖拽结束
 	 */
 	handleDragEnd = () => {
-		if (this.audioDOM.duration > 0) {
+      if (this.audioDOM.duration > 0) {
 			let currentTime = this.audioDOM.duration * this.dragProgress;
 			this.setState({
 				playProgress: this.dragProgress,
@@ -270,6 +272,7 @@ class Player extends React.Component {
 			});
 		}
 	}
+
 	render() {
 		this.currentIndex = this.props.currentIndex;
 

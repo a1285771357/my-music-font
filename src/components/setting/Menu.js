@@ -5,6 +5,7 @@ import Skin from "../../containers/Skin"
 import localStorage from '../../util/storage'
 import {logout} from "../../api/api";
 import PropTypes from "prop-types"
+import {message} from "antd"
 
 import "./menu.styl"
 
@@ -22,6 +23,10 @@ class Menu extends React.Component {
       router: PropTypes.object.isRequired
     };
 	showSetting = (status) => {
+		if (localStorage.getUserlevel() <= 2){
+			message.warning("等级不足，还不能设置皮肤，先升到二级吧")
+		  	return
+		}
 		this.close();
         // menu关闭后打开设置
         setTimeout(() => {

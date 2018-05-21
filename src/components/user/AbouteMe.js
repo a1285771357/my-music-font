@@ -26,16 +26,19 @@ class Aboute extends React.Component {
     super(props);
 
     this.state = {
-      data:[]
+      data:[],
+      likenum:0
     };
 
   }
 
   componentDidMount(){
-    getReviewToMe({username:localStorage.getUsername()}).then(value => {
+    // alert(JSON.stringify(this.props.username))
+    getReviewToMe({username:this.props.username}).then(value => {
       if (value.errorCode == 0){
         this.setState({
-          data:value.data
+          data:value.data,
+          likenum:value.likenum
         })
       }
 
@@ -49,7 +52,7 @@ class Aboute extends React.Component {
     return (
       <div className="box">
         <Collapse accordion>
-          <Panel header={[<span>已获得点赞：</span>,<span>{this.props.data}</span>]} disabled key="1"></Panel>
+          <Panel header={[<span>已获得点赞：</span>,<span>{this.state.likenum}</span>]} disabled key="1"></Panel>
           <Panel header={[<span>已获得评论：</span>,<span>{this.state.data.length}</span>]} key="2">
             {this.state.data.map((item,index) => {
               return (<p className="review">{(index+1)+"、"+item}</p>)

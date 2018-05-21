@@ -84,7 +84,7 @@ export async function logout(params) {
 }
 //获取我的主页信息
 export async function getMyHome(params) {
-  console.log(params)
+  // console.log(params)
   return request({
     url: HOST+'/getMyHome',
     method: 'post',
@@ -93,9 +93,81 @@ export async function getMyHome(params) {
 }
 //获取别人对我的评论
 export async function getReviewToMe(params) {
-  console.log(params)
+  // console.log(params)
   return request({
     url: HOST+'/getReviewToMe',
+    method: 'post',
+    data : params
+  });
+}
+//获取我的全部动态
+export async function getMyAllDynamic(params) {
+  // console.log(params)
+  return request({
+    url: HOST+'/getMyAllDynamic',
+    method: 'post',
+    data : params
+  });
+}
+//删除我的动态
+export async function delDynamic(params) {
+  // console.log(params)
+  return request({
+    url: HOST+'/delDynamic',
+    method: 'post',
+    data : params
+  });
+}
+//买VIP
+export async function buyVip(params) {
+  // console.log(params)
+  return request({
+    url: HOST+'/buyVip',
+    method: 'post',
+    data : params
+  });
+}
+//签到
+export async function signIn(params) {
+  // console.log(params)
+  return request({
+    url: HOST+'/signIn',
+    method: 'post',
+    data : params
+  });
+}
+//签到
+export async function updataUserProverbs(params) {
+  console.log(params)
+  return request({
+    url: HOST+'/updataUserProverbs',
+    method: 'post',
+    data : params
+  });
+}
+//个人信息脱敏
+export async function hideUserInfo(params) {
+  // console.log(params)
+  return request({
+    url: HOST+'/hideUserInfo',
+    method: 'post',
+    data : params
+  });
+}
+//获取关注列表，粉丝列表，是否关注
+export async function isWatch(params) {
+  // console.log(params)
+  return request({
+    url: HOST+'/isWatch',
+    method: 'post',
+    data : params
+  });
+}
+//关注某人
+export async function watching(params) {
+  console.log(params)
+  return request({
+    url: HOST+'/watching',
     method: 'post',
     data : params
   });

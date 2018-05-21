@@ -20,7 +20,7 @@ import "../assets/stylus/reset.styl"
 import "../assets/stylus/font.styl"
 import "./App.styl"
 
-import { Layout, Menu, Avatar, Tooltip } from 'antd';
+import { Layout, Menu, Avatar, Tooltip, message } from 'antd';
 const { Header } = Layout;
 
 class App extends React.Component {
@@ -62,12 +62,22 @@ class App extends React.Component {
     }
   }
 
+  handleSetting = ()=>{
+    if (localStorage.getLoginStatus() == "false"){
+      message.error("先去登录吧")
+      return
+    }else if(localStorage.getLoginStatus() == "true"){
+      this.setState({menuShow: true});
+    }
+
+  }
+
   render() {
     return (
         <Router>
           <div className="app skin-app">
             <header className="app-header skin-app-header">
-              <i className="icon-et-more app-more" onClick={() => {this.setState({menuShow: true});}}></i>
+              <i className="icon-et-more app-more" onClick={this.handleSetting}></i>
               <NavLink to="/musichall/recommend"><img src={logo} className="app-logo" alt="logo" /></NavLink>
               <NavLink to="/musichall/recommend"><h1 className="app-title">Mango Music</h1></NavLink>
               <NavLink to={this.selectRouter(localStorage.getLoginStatus())}>
